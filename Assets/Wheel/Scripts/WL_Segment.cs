@@ -9,6 +9,7 @@ public class WL_Segment : MonoBehaviour
 
     Color startColor = Color.black;
 
+
     MeshCollider collider = null;
     MeshFilter filter = null;
     MeshRenderer rend = null;
@@ -33,10 +34,6 @@ public class WL_Segment : MonoBehaviour
         rend.material.color = startColor;
     }
 
-    private void OnDrawGizmos()
-    {
-        
-    }
 
 
     public void InitSight(int _index, float _size, int _cuts)
@@ -89,15 +86,14 @@ public class WL_Segment : MonoBehaviour
     {
         float _start = index * (360f / cuts);
         float _end = _start + (360f / cuts);
-        Vector3[] _vertices = new Vector3[360 / cuts + 9];
-        int[] _triangles = new int[360 / cuts * 3 + 9];
+        List<Vector3> _vertices = new List<Vector3>();
+        List<int> _triangles = new List<int>();
 
         // Triangles de base
 
         Vector3 _startPos, _midPos, _endPos;
 
-        _vertices[0] = Vector3.zero;
-        _vertices[3] = Vector3.zero;
+        _vertices.Add(Vector3.zero);
         float _angleStart = (90 - _start);
         _startPos = new Vector3(Mathf.Cos(_angleStart * Mathf.Deg2Rad), Mathf.Sin(_angleStart * Mathf.Deg2Rad)) * size;
         float _angleEnd = (90 - _end);
@@ -105,54 +101,68 @@ public class WL_Segment : MonoBehaviour
 
         _midPos = (_startPos + _endPos) / 2;
 
-        _vertices[1] = _startPos;
-        _vertices[2] = _midPos;
-        _vertices[4] = _midPos;
-        _vertices[5] = _endPos;
+        _vertices.Add(_startPos);
+        _vertices.Add(_midPos);
+        _vertices.Add(Vector3.zero);
+        _vertices.Add(_midPos);
+        _vertices.Add(_endPos);
 
-        _triangles[0] = 0;
-        _triangles[1] = 1;
-        _triangles[2] = 2;
-        _triangles[3] = 3;
-        _triangles[4] = 4;
-        _triangles[5] = 5;
+        _triangles.Add(0);
+        _triangles.Add(1);
+        _triangles.Add(2);
+        _triangles.Add(3);
+        _triangles.Add(4);
+        _triangles.Add(5);
+
 
         //
 
         // Segment
 
-        Vector3[] _pos = new Vector3[360 / cuts + 1];
-
-        Vector3 p0 = _vertices[1], p1 = _vertices[1] + _vertices[5], p2 = _vertices[5];
-
-        float _pouet = 360f / cuts;
-
-        for (int i = 0; i < _pouet + 1; i++)
+        //List<Vector3> _arcPoints = new List<Vector3>();
+        float _angle = _start;
+        float _arcLength = _end - _start;
+        for (int i = 0; i <= 360/cuts; i++)
         {
-            _pos[i] = ((1 - (i / _pouet)) * (1 - (i / _pouet))) * p0 + 2 * (1 - (i / _pouet)) * (i / _pouet) * p1 + ((i / _pouet) * (i / _pouet)) * p2;
+            float _x = Mathf.Sin(Mathf.Deg2Rad * _angle) * size;
+            float _y = Mathf.Cos(Mathf.Deg2Rad * _angle) * size;
+
+            _vertices.Add(new Vector3(_x, _y));
+
+            _angle += (_arcLength / (360 / cuts));
         }
 
-        for (int i = 0; i < _pos.Length - 3; i+=3)
+        _triangles.Add(2);
+        _triangles.Add(1);
+        _triangles.Add(8);
+
+        //int _index = 0;
+
+        for (int i = 7; i < _vertices.Count - 2; i++)
         {
-            _vertices[i + 6] = _midPos;
-            if (i == 0) _vertices[i + 7] = _vertices[1];
-            else _vertices[i + 7] = _vertices[i + 6 - 1];
-            _vertices[i + 8] = _pos[i + 2];
-            _triangles[i + 6] = i + 6;
-            _triangles[i + 7] = i + 7;
-            _triangles[i + 8] = i + 8;
+            _triangles.Add(2);
+            _triangles.Add(i + 1);
+            _triangles.Add(i + 2);
+            //if (i % 3 == 0) _index++;
         }
 
-        _vertices[_vertices.Length - 3] = _midPos;
-        _vertices[_vertices.Length - 2] = _vertices[_vertices.Length - 4];
-        _vertices[_vertices.Length - 1] = _endPos;
+        //for (int i = 0; i < _pos.Length - 3; i+=3)
+        //{
+        //    _vertices[i + 6] = _midPos;
+        //    if (i == 0) _vertices[i + 7] = _vertices[1];
+        //    else _vertices[i + 7] = _vertices[i + 6 - 1];
+        //    _vertices[i + 8] = _pos[i + 2];
+        //    _triangles[i + 6] = i + 6;
+        //    _triangles[i + 7] = i + 7;
+        //    _triangles[i + 8] = i + 8;
+        //}
 
         //
 
         Mesh _mesh = new Mesh();
         _mesh.name = $"Segment {index}  mesh";
-        _mesh.vertices = _vertices;
-        _mesh.triangles = _triangles;
+        _mesh.vertices = _vertices.ToArray();
+        _mesh.triangles = _triangles.ToArray();
         _mesh.RecalculateTangents();
         _mesh.RecalculateNormals();
         _mesh.RecalculateBounds();
