@@ -169,10 +169,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e519e90c01cf55947b698c0e001ff755, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cuts: 2
-  size: 1
-  allMats: []
-  allEvents: []
+  Cuts: 4
+  Size: 5
+  UseColor: 0
+  MultipleMat: 1
+  MultipleColor: 1
+  SingleMat: {fileID: 0}
+  SingleColor: {r: 0, g: 0, b: 0, a: 1}
+  AllMats:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  AllEvents: []
+  AllColors:
+  - {r: 0, g: 0, b: 0, a: 1}
+  - {r: 0, g: 0, b: 0, a: 1}
+  - {r: 0, g: 0, b: 0, a: 1}
+  - {r: 0, g: 0, b: 0, a: 1}
 --- !u!222 &15833966
 CanvasRenderer:
   m_ObjectHideFlags: 0

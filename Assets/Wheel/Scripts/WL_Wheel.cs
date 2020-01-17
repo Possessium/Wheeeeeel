@@ -6,15 +6,25 @@ using UnityEngine.Events;
 
 public class WL_Wheel : MonoBehaviour
 {
-    [SerializeField, Range(1, 180)] int cuts = 4;
-    [SerializeField, Range(.1f, 10)] float size = 5;
-
-    [SerializeField] List<Material> allMats = new List<Material>();
-        public List<Material> AllMats { get { return allMats; } }
-    [SerializeField] List<UnityEvent> allEvents = new List<UnityEvent>();
-        public List<UnityEvent> AllEvents { get { return allEvents; } }
 
     List<WL_Segment> allSegments = new List<WL_Segment>();
+
+    #region USER
+    public int Cuts = 4;
+    public float Size = 5;
+
+    public bool UseColor = true;
+
+    public bool MultipleMat = false;
+    public bool MultipleColor = false;
+
+    public Material SingleMat = null;
+    public Color SingleColor = Color.black;
+
+    public List<Material> AllMats = new List<Material>();
+    public List<UnityEvent> AllEvents = new List<UnityEvent>();
+    public List<Color> AllColors = new List<Color>();
+    #endregion
 
     int oldCuts = 0;
     float oldSize = 0;
@@ -23,43 +33,43 @@ public class WL_Wheel : MonoBehaviour
     private void Start()
     {
         InitWheel();
-        oldCuts = cuts;
-        oldSize = size;
+        oldCuts = Cuts;
+        oldSize = Size;
     }
 
     private void Update()
     {
         if (Input.GetButtonDown("Wheel Submit")) ClickSegment();
-        if (cuts != oldCuts || size != oldSize)
+        if (Cuts != oldCuts || Size != oldSize)
         {
             InitWheel();
         }
         float _mousePos = Input.mousePosition.magnitude;
         if (_mousePos == lastMousePos && !allSegments.Any(s => s.MouseSelected)) JoystickAngle();
         lastMousePos = _mousePos;
-        oldCuts = cuts;
-        oldSize = size;
+        oldCuts = Cuts;
+        oldSize = Size;
     }
 
     void ClickSegment()
     {
         WL_Segment _s = allSegments.Where(s => s.SegmentActive).FirstOrDefault();
         if (!_s) return;
-        if(allEvents.Count > _s.Index) allEvents[_s.Index]?.Invoke();
+        if(AllEvents.Count > _s.Index) AllEvents[_s.Index]?.Invoke();
     }
 
     void InitWheel()
     {
         allSegments.ForEach(g => Destroy(g.gameObject));
         allSegments.Clear();
-        for (int i = 0; i < cuts; i++)
+        for (int i = 0; i < Cuts; i++)
         {
             GameObject _go = new GameObject($"Segment {i}", typeof(RectTransform));
             _go.transform.SetParent(transform);
             _go.transform.position = transform.position;
             WL_Segment _s = _go.AddComponent<WL_Segment>();
             allSegments.Add(_s);
-            _s.InitSight(i, size, cuts, this);
+            _s.InitSight(i, Size, Cuts, this);
         }
     }
 

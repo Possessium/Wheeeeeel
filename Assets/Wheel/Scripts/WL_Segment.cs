@@ -17,7 +17,6 @@ public class WL_Segment : MonoBehaviour
 
     public float StartAngle { get; private set; } = 0;
     public float EndAngle { get; private set; } = 0;
-
     public int Index { get; private set; } = 0;
     float size = 0;
     int cuts = 0;
@@ -146,8 +145,8 @@ public class WL_Segment : MonoBehaviour
         filter.mesh = _mesh;
         GetComponent<MeshCollider>().sharedMesh = _mesh;
 
-        rend.material = wheel.AllMats.Count > Index ? wheel.AllMats[Index] : rend.material;
-        startColor = rend.material.color;
+        if(!wheel.UseColor)rend.material = wheel.MultipleMat ? (wheel.AllMats.Count > Index ? wheel.AllMats[Index] : rend.material ) : wheel.SingleMat ? wheel.SingleMat : rend.material ;
+        else startColor = wheel.MultipleColor ? (wheel.AllColors.Count > Index ? wheel.AllColors[Index] : rend.material.color) : wheel.SingleColor;
     }
 
 }
