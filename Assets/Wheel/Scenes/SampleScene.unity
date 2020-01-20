@@ -169,11 +169,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e519e90c01cf55947b698c0e001ff755, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Cuts: 4
+  Cuts: 5
   Size: 5
-  UseColor: 0
-  MultipleMat: 1
-  MultipleColor: 1
+  UseColor: 1
+  MultipleMat: 0
+  MultipleColor: 0
   SingleMat: {fileID: 0}
   SingleColor: {r: 0, g: 0, b: 0, a: 1}
   AllMats:
@@ -181,8 +181,20 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  AllEvents: []
+  - {fileID: 0}
+  AllEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+  - m_PersistentCalls:
+      m_Calls: []
+  - m_PersistentCalls:
+      m_Calls: []
+  - m_PersistentCalls:
+      m_Calls: []
+  - m_PersistentCalls:
+      m_Calls: []
   AllColors:
+  - {r: 0, g: 0, b: 0, a: 1}
   - {r: 0, g: 0, b: 0, a: 1}
   - {r: 0, g: 0, b: 0, a: 1}
   - {r: 0, g: 0, b: 0, a: 1}

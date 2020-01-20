@@ -56,7 +56,6 @@ public class WL_Segment : MonoBehaviour
         Index = _index;
         size = _size;
         DrawMesh();
-        //DrawMeshOLD();
     }
 
     public void Activate(bool _state)
@@ -64,7 +63,7 @@ public class WL_Segment : MonoBehaviour
         SegmentActive = _state;
         if(_state)
         {
-            rend.material.color = Color.red;
+            rend.material.color = wheel.HighlighColor;
         }
         else
         {
@@ -78,7 +77,6 @@ public class WL_Segment : MonoBehaviour
         float _end = _start + (360f / cuts);
         StartAngle = _start;
         EndAngle = _end;
-        name = $"{StartAngle}   {EndAngle}"; // DEBUG
         List<Vector3> _vertices = new List<Vector3>();
         List<int> _triangles = new List<int>();
 
@@ -150,3 +148,12 @@ public class WL_Segment : MonoBehaviour
     }
 
 }
+
+
+/*
+ * 
+ * KESKY FO D'AKSESIBL SUR LE SEGMEN ?
+ * 
+ * 
+ * 
+ */

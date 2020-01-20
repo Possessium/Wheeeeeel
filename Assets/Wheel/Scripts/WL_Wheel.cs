@@ -9,7 +9,6 @@ public class WL_Wheel : MonoBehaviour
 
     List<WL_Segment> allSegments = new List<WL_Segment>();
 
-    #region USER
     public int Cuts = 4;
     public float Size = 5;
 
@@ -20,11 +19,11 @@ public class WL_Wheel : MonoBehaviour
 
     public Material SingleMat = null;
     public Color SingleColor = Color.black;
+    public Color HighlighColor = Color.red;
 
     public List<Material> AllMats = new List<Material>();
     public List<UnityEvent> AllEvents = new List<UnityEvent>();
     public List<Color> AllColors = new List<Color>();
-    #endregion
 
     int oldCuts = 0;
     float oldSize = 0;
@@ -76,7 +75,7 @@ public class WL_Wheel : MonoBehaviour
     void JoystickAngle()
     {
         float _x = Input.GetAxis("Wheel Horizontal"), _y = Input.GetAxis("Wheel Vertical");
-        if(_x > -.3f && _x < .3f && _y > -.3f && _y < .3f)
+        if(_x > -.01f && _x < .01f && _y > -.01f && _y < .01f)
         {
             ClearSegments();
             return;
@@ -88,7 +87,7 @@ public class WL_Wheel : MonoBehaviour
             float _diff = 360 - _angle;
             _angle = 180 + _diff;
         }
-        if (_x < -.3f || _x > .3f || _y < -.3f || _y > .3f) SetSegmentActive(_angle);
+        if (_x < -.01f || _x > .01f || _y < -.01f || _y > .01f) SetSegmentActive(_angle);
     }
 
     public void ClearSegments()
@@ -110,3 +109,12 @@ public class WL_Wheel : MonoBehaviour
         else allSegments[0].Activate(true);
     }
 }
+
+/*
+ * 
+ * KESKY FO 2 PUBLIC ?
+ * 
+ * events, materials, colors.   DONE
+ * 
+ * 
+ */
