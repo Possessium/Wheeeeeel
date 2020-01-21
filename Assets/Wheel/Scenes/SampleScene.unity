@@ -169,15 +169,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e519e90c01cf55947b698c0e001ff755, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Cuts: 5
-  Size: 5
+  Cuts: 4
+  Size: 2
   UseColor: 1
-  MultipleMat: 0
+  MultipleMat: 1
   MultipleColor: 0
   SingleMat: {fileID: 0}
   SingleColor: {r: 0, g: 0, b: 0, a: 1}
+  HighlighColor: {r: 1, g: 0.8217412, b: 0, a: 1}
   AllMats:
-  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -191,10 +191,7 @@ MonoBehaviour:
       m_Calls: []
   - m_PersistentCalls:
       m_Calls: []
-  - m_PersistentCalls:
-      m_Calls: []
   AllColors:
-  - {r: 0, g: 0, b: 0, a: 1}
   - {r: 0, g: 0, b: 0, a: 1}
   - {r: 0, g: 0, b: 0, a: 1}
   - {r: 0, g: 0, b: 0, a: 1}
@@ -598,8 +595,8 @@ Camera:
   m_GameObject: {fileID: 1339740321}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
