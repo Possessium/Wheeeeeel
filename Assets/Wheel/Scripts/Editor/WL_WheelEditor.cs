@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using System.Linq;
 using UnityEngine.Events;
 
 [CustomEditor(typeof(WL_Wheel))]
@@ -86,9 +87,13 @@ public class WL_WheelEditor : Editor
         }
 
         EditorGUILayout.BeginHorizontal();
+        bool _oldUseColor = tWhl.UseColor;
         tWhl.UseColor = EditorGUILayout.ToggleLeft("Use custom Color :", tWhl.UseColor);
         tWhl.UseColor = !EditorGUILayout.ToggleLeft("Use custom Material :", !tWhl.UseColor);
+        if (_oldUseColor != tWhl.UseColor) tWhl.AllSegments.ForEach(s => s.DrawMesh());
         EditorGUILayout.EndHorizontal();
+        EditorGUILayout.Space();
+        tWhl.HighlighColor = EditorGUILayout.ColorField("Highlight color : ", tWhl.HighlighColor);
         EditorGUILayout.Space();
         if (tWhl.UseColor) CEditorColor();
         else CEditorMaterial();
@@ -99,7 +104,6 @@ public class WL_WheelEditor : Editor
 
     void CEditorColor()
     {
-        tWhl.HighlighColor = EditorGUILayout.ColorField("Highlight color : ", tWhl.HighlighColor);
         tWhl.MultipleColor = EditorGUILayout.ToggleLeft("Use multiple color", tWhl.MultipleColor);
         if (tWhl.MultipleColor)
         {

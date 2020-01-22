@@ -71,7 +71,7 @@ public class WL_Segment : MonoBehaviour
         }
     }
 
-    void DrawMesh()
+    public void DrawMesh()
     {
         float _start = Index * (360f / cuts);
         float _end = _start + (360f / cuts);
@@ -143,17 +143,17 @@ public class WL_Segment : MonoBehaviour
         filter.mesh = _mesh;
         GetComponent<MeshCollider>().sharedMesh = _mesh;
 
-        if(!wheel.UseColor)rend.material = wheel.MultipleMat ? (wheel.AllMats.Count > Index ? wheel.AllMats[Index] : rend.material ) : wheel.SingleMat ? wheel.SingleMat : rend.material ;
-        else startColor = wheel.MultipleColor ? (wheel.AllColors.Count > Index ? wheel.AllColors[Index] : rend.material.color) : wheel.SingleColor;
+
+        if (!wheel.UseColor)
+        {
+            rend.material = wheel.MultipleMat ? (wheel.AllMats.Count > Index ? wheel.AllMats[Index] : rend.material) : wheel.SingleMat ? wheel.SingleMat : rend.material;
+            startColor = rend.material.color;
+        }
+        else
+        {
+            rend.material = default;
+            startColor = wheel.MultipleColor ? (wheel.AllColors.Count > Index ? wheel.AllColors[Index] : rend.material.color) : wheel.SingleColor;
+        }
     }
 
 }
-
-
-/*
- * 
- * KESKY FO D'AKSESIBL SUR LE SEGMEN ?
- * 
- * 
- * 
- */
