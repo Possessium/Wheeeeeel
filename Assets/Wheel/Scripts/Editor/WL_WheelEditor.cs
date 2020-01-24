@@ -90,7 +90,7 @@ public class WL_WheelEditor : Editor
         bool _oldUseColor = tWhl.UseColor;
         tWhl.UseColor = EditorGUILayout.ToggleLeft("Use custom Color :", tWhl.UseColor);
         tWhl.UseColor = !EditorGUILayout.ToggleLeft("Use custom Material :", !tWhl.UseColor);
-        if (_oldUseColor != tWhl.UseColor) tWhl.AllSegments.ForEach(s => s.DrawMesh());
+        //if (_oldUseColor != tWhl.UseColor) tWhl.AllSegments.ForEach(s => s.DrawMesh());
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.Space();
         tWhl.HighlighColor = EditorGUILayout.ColorField("Highlight color : ", tWhl.HighlighColor);

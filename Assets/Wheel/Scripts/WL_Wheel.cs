@@ -6,6 +6,7 @@ using UnityEngine.Events;
 
 public class WL_Wheel : MonoBehaviour
 {
+    public Material DefaultMat = null;
 
     public List<WL_Segment> AllSegments = new List<WL_Segment>();
 
@@ -29,10 +30,16 @@ public class WL_Wheel : MonoBehaviour
     float oldSize = 0;
     List<Material> oldMats = new List<Material>();
     List<Color> oldColors = new List<Color>();
-    float lastMousePos = 0;
+    //float lastMousePos = 0;
+
+    public Sprite SegmentSprite = null;
+
+    Vector3 joystickPos = Vector3.zero;
+    [SerializeField] GameObject merdeBordelCulFesse = null;
 
     private void Start()
     {
+        transform.localScale = Vector3.one * Size;
         InitWheel();
         oldCuts = Cuts;
         oldSize = Size;
@@ -48,6 +55,10 @@ public class WL_Wheel : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKey(KeyCode.LeftArrow)) transform.eulerAngles += transform.forward;
+        if (Input.GetKey(KeyCode.RightArrow)) transform.eulerAngles -= transform.forward;
+        if (merdeBordelCulFesse) merdeBordelCulFesse.transform.localPosition = joystickPos;
+
         if (Input.GetButtonDown("Wheel Submit")) ClickSegment();
         if (Cuts != oldCuts || Size != oldSize)
         {
@@ -69,9 +80,7 @@ public class WL_Wheel : MonoBehaviour
                     break;
                 }
         }
-        float _mousePos = Input.mousePosition.magnitude;
-        if (_mousePos == lastMousePos && !AllSegments.Any(s => s.MouseSelected)) JoystickAngle();
-        lastMousePos = _mousePos;
+        if(!JoystickAngle()) MouseAngle();
         oldCuts = Cuts;
         oldSize = Size;
         if (!UseColor)
@@ -92,6 +101,7 @@ public class WL_Wheel : MonoBehaviour
         }
     }
 
+
     void ClickSegment()
     {
         WL_Segment _s = AllSegments.Where(s => s.SegmentActive).FirstOrDefault();
@@ -103,6 +113,7 @@ public class WL_Wheel : MonoBehaviour
     {
         AllSegments.ForEach(g => Destroy(g.gameObject));
         AllSegments.Clear();
+        transform.localScale = Vector3.one * Size;
         for (int i = 0; i < Cuts; i++)
         {
             GameObject _go = new GameObject($"Segment {i}", typeof(RectTransform));
@@ -114,13 +125,14 @@ public class WL_Wheel : MonoBehaviour
         }
     }
 
-    void JoystickAngle()
+    bool JoystickAngle()
     {
         float _x = Input.GetAxis("Wheel Horizontal"), _y = Input.GetAxis("Wheel Vertical");
+        joystickPos = new Vector3(_x, -_y) * (Size*10);
         if (_x > -.01f && _x < .01f && _y > -.01f && _y < .01f)
         {
             ClearSegments();
-            return;
+            return false;
         }
         float _angle = Mathf.Asin(_y) * Mathf.Rad2Deg + 90;
         if (_x < 0)
@@ -129,7 +141,23 @@ public class WL_Wheel : MonoBehaviour
             float _diff = 360 - _angle;
             _angle = 180 + _diff;
         }
-        if (_x < -.01f || _x > .01f || _y < -.01f || _y > .01f) SetSegmentActive(_angle);
+        _angle -= Mathf.CeilToInt(transform.rotation.z < 0 ? -transform.rotation.z : transform.rotation.z);
+        SetSegmentActive(_angle);
+        return true;
+    }
+
+    void MouseAngle()
+    {
+        Vector2 _mouse = Input.mousePosition;
+        if (_mouse.x < 0 || _mouse.x > Screen.width || _mouse.y < 0 || _mouse.y > Screen.height) return;
+        _mouse = new Vector2(-(_mouse.x - (Screen.width / 2)), _mouse.y - (Screen.height / 2));
+        float _angle = Vector3.SignedAngle(Vector3.up, _mouse, Vector3.forward);
+        if(_angle < 0)
+        {
+            float _diff = -180 - _angle;
+            _angle = 180 - _diff;
+        }
+        SetSegmentActive(_angle);
     }
 
     public void ClearSegments()
@@ -142,6 +170,7 @@ public class WL_Wheel : MonoBehaviour
 
     void SetSegmentActive(float _angle)
     {
+        Debug.Log(_angle);
         foreach (WL_Segment _s in AllSegments)
         {
             _s.Activate(false);
@@ -151,12 +180,3 @@ public class WL_Wheel : MonoBehaviour
         else AllSegments[0].Activate(true);
     }
 }
-
-/*
- * 
- * KESKY FO 2 PUBLIC ?
- * 
- * events, materials, colors.   DONE
- * 
- * 
- */
