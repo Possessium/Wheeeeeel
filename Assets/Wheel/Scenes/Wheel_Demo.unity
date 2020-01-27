@@ -172,10 +172,16 @@ MonoBehaviour:
   AllSegments: []
   Cuts: 5
   Size: 4
+  JoystickAxisHorizontal: Wheel Horizontal
+  JoystickAxisVertical: Wheel Vertical
   UseColor: 1
+  UseMaterial: 0
+  UseImage: 1
   MultipleMat: 1
   MultipleColor: 1
+  MultipleImages: 0
   SingleMat: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  SingleImage: {fileID: 10915, guid: 0000000000000000f000000000000000, type: 0}
   SingleColor: {r: 0.6698113, g: 0.65248036, b: 0.3507031, a: 1}
   HighlighColor: {r: 1, g: 0, b: 0, a: 1}
   AllMats:
@@ -201,6 +207,7 @@ MonoBehaviour:
   - {r: 0.479172, g: 0.7830189, b: 0.28439835, a: 0.5647059}
   - {r: 0.45293984, g: 0.4716981, b: 0.11347453, a: 1}
   - {r: 0.73587936, g: 0.6901961, b: 0.78431374, a: 0.83137256}
+  AllImages: []
   SegmentSprite: {fileID: 21300000, guid: ad0bb3416a02e2a4c9e20bd8fa7a071b, type: 3}
   merdeBordelCulFesse: {fileID: 1016698505}
 --- !u!1 &709190424
@@ -403,7 +410,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1016698506
 RectTransform:
   m_ObjectHideFlags: 0

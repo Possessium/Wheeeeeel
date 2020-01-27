@@ -23,6 +23,10 @@ public class WL_Segment : MonoBehaviour
     float angle = 0;
     public bool MouseSelected { get; private set; } = false;
 
+    Image childImage = null;
+
+    public bool IsReady { get; private set; } = false;
+
     private void OnMouseDown()
     {
         clickEvent?.Invoke();
@@ -42,6 +46,10 @@ public class WL_Segment : MonoBehaviour
         Activate(false);
     }
 
+    private void OnDestroy()
+    {
+        if (childImage) Destroy(childImage.gameObject);
+    }
 
     public void InitSight(int _index, float _size, int _cuts, WL_Wheel _wheel)
     {
@@ -82,91 +90,20 @@ public class WL_Segment : MonoBehaviour
         }
     }
 
-    //public void DrawMesh()
-    //{
-    //    float _start = Index * (360f / cuts);
-    //    float _end = _start + (360f / cuts);
-    //    StartAngle = _start;
-    //    EndAngle = _end;
-    //    List<Vector3> _vertices = new List<Vector3>();
-    //    List<int> _triangles = new List<int>();
-
-    //    // Triangles de base
-
-    //    Vector3 _startPos, _midPos, _endPos;
-
-    //    _vertices.Add(Vector3.zero);
-    //    float _angleStart = (90 - _start);
-    //    _startPos = new Vector3(Mathf.Cos(_angleStart * Mathf.Deg2Rad), Mathf.Sin(_angleStart * Mathf.Deg2Rad)) * size;
-    //    float _angleEnd = (90 - _end);
-    //    _endPos = new Vector3(Mathf.Cos(_angleEnd * Mathf.Deg2Rad), Mathf.Sin(_angleEnd * Mathf.Deg2Rad)) * size;
-
-    //    _midPos = (_startPos + _endPos) / 2;
-
-    //    _vertices.Add(_startPos);
-    //    _vertices.Add(_midPos);
-    //    _vertices.Add(Vector3.zero);
-    //    _vertices.Add(_midPos);
-    //    _vertices.Add(_endPos);
-
-    //    _triangles.Add(0);
-    //    _triangles.Add(1);
-    //    _triangles.Add(2);
-    //    _triangles.Add(3);
-    //    _triangles.Add(4);
-    //    _triangles.Add(5);
-
-    //    //
-
-    //    // Segment
-
-    //    float _angle = _start;
-    //    float _arcLength = _end - _start;
-    //    for (int i = 0; i <= 360/cuts; i++)
-    //    {
-    //        float _x = Mathf.Sin(Mathf.Deg2Rad * _angle) * size;
-    //        float _y = Mathf.Cos(Mathf.Deg2Rad * _angle) * size;
-
-    //        _vertices.Add(new Vector3(_x, _y));
-
-    //        _angle += (_arcLength / (360 / cuts));
-    //    }
-
-    //    _triangles.Add(2);
-    //    _triangles.Add(1);
-    //    _triangles.Add(8);
-
-    //    for (int i = 7; i < _vertices.Count - 2; i++)
-    //    {
-    //        _triangles.Add(2);
-    //        _triangles.Add(i + 1);
-    //        _triangles.Add(i + 2);
-    //    }
-    //    //
-
-    //    Mesh _mesh = new Mesh();
-    //    _mesh.name = $"Segment {Index}  mesh";
-    //    _mesh.vertices = _vertices.ToArray();
-    //    _mesh.triangles = _triangles.ToArray();
-    //    _mesh.RecalculateTangents();
-    //    _mesh.RecalculateNormals();
-    //    _mesh.RecalculateBounds();
-    //    filter.mesh = _mesh;
-    //    GetComponent<MeshCollider>().sharedMesh = _mesh;
-
-
-    //    if (!wheel.UseColor)
-    //    {
-    //        rend.material = wheel.MultipleMat ? (wheel.AllMats.Count > Index ? wheel.AllMats[Index] : rend.material) : wheel.SingleMat ? wheel.SingleMat : rend.material;
-    //        startColor = rend.material.color;
-    //    }
-    //    else
-    //    {
-    //        rend.material = default;
-    //        startColor = wheel.MultipleColor ? (wheel.AllColors.Count > Index ? wheel.AllColors[Index] : rend.material.color) : wheel.SingleColor;
-    //    }
-    //}
-
+    public void UpdateSegment()
+    {
+        if (childImage) childImage.transform.rotation = new Quaternion(0, 0, -transform.rotation.z, 0);
+    }
+    public void UpdateSegment(WL_Segment _nextSegment)
+    {
+        if(childImage)
+        {
+            childImage.transform.rotation = new Quaternion(0, 0, -transform.rotation.z, 0);
+            Vector3 _dir = (Vector3.zero + transform.up + _nextSegment.transform.up) / 3;
+            childImage.transform.localPosition = (_dir * wheel.Size) * 10;
+        }
+    }
+    
     public void DrawSegment()
     {
         angle = 360f / cuts;
@@ -175,19 +112,46 @@ public class WL_Segment : MonoBehaviour
         StartAngle = _start;
         EndAngle = _end;
 
-        name = $"{_start}   {_end}";
-
         rend.fillAmount = angle / 360;
         transform.eulerAngles = new Vector3(0, 0, -angle * Index);
+
         if(wheel.UseColor)
         {
             startColor = wheel.MultipleColor ? (Index >= wheel.AllColors.Count ? startColor : wheel.AllColors[Index]) : wheel.SingleColor;
             rend.color = startColor;
             rend.material = wheel.DefaultMat;
         }
-        else
+        else if(wheel.UseMaterial)
         {
             rend.material = wheel.MultipleMat ? (wheel.AllMats.Count >= Index ? wheel.DefaultMat : wheel.AllMats[Index]) : wheel.SingleMat;
         }
+        if(wheel.UseImage)
+        {
+            if(!wheel.MultipleImages)
+            {
+                GameObject _go = new GameObject($"Image of {name}", typeof(Image));
+                _go.transform.SetParent(wheel.transform);
+
+                //Vector2 _pos = new Vector2(Mathf.Cos(StartAngle * Mathf.Deg2Rad), Mathf.Sin(StartAngle * Mathf.Deg2Rad)) * wheel.Size;
+                //Vector2 _pos2 = new Vector2(Mathf.Cos(EndAngle * Mathf.Deg2Rad), Mathf.Sin(EndAngle * Mathf.Deg2Rad)) * wheel.Size;
+
+
+                //_go.transform.localPosition = (Vector2.zero + _pos + _pos2) / 3;
+                //childImage.transform.rotation = new Quaternion(0, 0, -transform.rotation.z, 0);
+                childImage = _go.GetComponent<Image>();
+                childImage.sprite = wheel.SingleImage;
+            }
+            else
+            {
+                GameObject _go = new GameObject($"Image of {name}", typeof(Image));
+                //_go.transform.SetParent(this.transform);
+                _go.transform.localPosition = transform.forward * 5;
+                //childImage.transform.rotation = new Quaternion(0, 0, -transform.rotation.z, 0);
+                childImage = _go.GetComponent<Image>();
+                childImage.sprite = wheel.AllImages.Count > Index ? wheel.AllImages[Index] : wheel.SingleImage;
+            }
+        }
+        IsReady = true;
+        wheel.CheckPos();
     }
 }
