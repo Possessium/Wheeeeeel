@@ -134,10 +134,12 @@ public class WL_Wheel : MonoBehaviour
 
     public void CheckPos()
     {
+        if (AllSegments.Any(s => !s.IsReady)) return;
         for (int i = 0; i < AllSegments.Count; i++)
         {
             AllSegments[i].UpdateSegment(AllSegments.Count > i + 1 ? AllSegments[i + 1] : AllSegments[0]);
         }
+        ResetRotation();
     }
 
     void InitWheel()

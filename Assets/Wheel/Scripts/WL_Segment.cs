@@ -92,7 +92,7 @@ public class WL_Segment : MonoBehaviour
 
     public void UpdateSegment()
     {
-        if (childImage) childImage.transform.rotation = new Quaternion(0, 0, -transform.rotation.z, 0);
+        if (childImage) childImage.transform.rotation = new Quaternion(0, 0, -transform.rotation.z == 0 ? .1f : -transform.rotation.z, 0);
     }
     public void UpdateSegment(WL_Segment _nextSegment)
     {
@@ -131,22 +131,13 @@ public class WL_Segment : MonoBehaviour
             {
                 GameObject _go = new GameObject($"Image of {name}", typeof(Image));
                 _go.transform.SetParent(wheel.transform);
-
-                //Vector2 _pos = new Vector2(Mathf.Cos(StartAngle * Mathf.Deg2Rad), Mathf.Sin(StartAngle * Mathf.Deg2Rad)) * wheel.Size;
-                //Vector2 _pos2 = new Vector2(Mathf.Cos(EndAngle * Mathf.Deg2Rad), Mathf.Sin(EndAngle * Mathf.Deg2Rad)) * wheel.Size;
-
-
-                //_go.transform.localPosition = (Vector2.zero + _pos + _pos2) / 3;
-                //childImage.transform.rotation = new Quaternion(0, 0, -transform.rotation.z, 0);
                 childImage = _go.GetComponent<Image>();
                 childImage.sprite = wheel.SingleImage;
             }
             else
             {
                 GameObject _go = new GameObject($"Image of {name}", typeof(Image));
-                //_go.transform.SetParent(this.transform);
                 _go.transform.localPosition = transform.forward * 5;
-                //childImage.transform.rotation = new Quaternion(0, 0, -transform.rotation.z, 0);
                 childImage = _go.GetComponent<Image>();
                 childImage.sprite = wheel.AllImages.Count > Index ? wheel.AllImages[Index] : wheel.SingleImage;
             }
