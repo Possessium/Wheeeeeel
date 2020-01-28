@@ -15,10 +15,10 @@ public class WL_WheelEditor : Editor
 
     public override void OnInspectorGUI()
     {
+        editorOpen = EditorGUILayout.Foldout(editorOpen, (editorOpen ? "Close" : "Open") + " custom editor", true);
         if (!editorOpen) base.OnInspectorGUI();
         tWhl = (WL_Wheel)target;
 
-        editorOpen = EditorGUILayout.Foldout(editorOpen, (editorOpen ? "Close" : "Open") + " custom editor", true);
         if (editorOpen) CEditor();
 
 
@@ -27,7 +27,6 @@ public class WL_WheelEditor : Editor
     void CEditor()
     {
         EditorGUILayout.Space();
-        int _oldCuts = tWhl.Cuts;
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("Number of cuts :");
         tWhl.Cuts = EditorGUILayout.IntSlider(tWhl.Cuts, 1, 180);
@@ -40,57 +39,9 @@ public class WL_WheelEditor : Editor
         EditorGUILayout.Space();
         EditorGUILayout.Space();
 
-        if (_oldCuts != tWhl.Cuts)
-        {
-            // update list
-
-            List<Color> _oldColors = new List<Color>();
-            for (int i = 0; i < tWhl.AllColors.Count; i++)
-            {
-                _oldColors.Add(tWhl.AllColors[i]);
-            }
-            List<UnityEvent> _oldEvents = new List<UnityEvent>();
-            for (int i = 0; i < tWhl.AllEvents.Count; i++)
-            {
-                _oldEvents.Add(tWhl.AllEvents[i]);
-            }
-            List<Material> _oldMats = new List<Material>();
-            for (int i = 0; i < tWhl.AllMats.Count; i++)
-            {
-                _oldMats.Add(tWhl.AllMats[i]);
-            }
-            tWhl.AllColors.Clear();
-            tWhl.AllMats.Clear();
-            tWhl.AllEvents.Clear();
-            for (int i = 0; i < tWhl.Cuts; i++)
-            {
-                tWhl.AllColors.Add(Color.black);
-                tWhl.AllMats.Add(null);
-                tWhl.AllEvents.Add(new UnityEvent());
-            }
-            for (int i = 0; i < tWhl.Cuts; i++)
-            {
-                if (i > _oldColors.Count - 1) break;
-                tWhl.AllColors[i] = _oldColors[i];
-            }
-            for (int i = 0; i < tWhl.Cuts; i++)
-            {
-                if (i > _oldMats.Count - 1) break;
-                tWhl.AllMats[i] = _oldMats[i];
-            }
-            for (int i = 0; i < tWhl.Cuts; i++)
-            {
-                if (i > _oldEvents.Count - 1) break;
-                tWhl.AllEvents[i] = _oldEvents[i];
-            }
-
-        }
-
         EditorGUILayout.BeginHorizontal();
-        bool _oldUseColor = tWhl.UseColor;
         tWhl.UseColor = EditorGUILayout.ToggleLeft("Use custom Color :", tWhl.UseColor);
         tWhl.UseColor = !EditorGUILayout.ToggleLeft("Use custom Material :", !tWhl.UseColor);
-        //if (_oldUseColor != tWhl.UseColor) tWhl.AllSegments.ForEach(s => s.DrawMesh());
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.Space();
         tWhl.HighlighColor = EditorGUILayout.ColorField("Highlight color : ", tWhl.HighlighColor);
@@ -111,9 +62,10 @@ public class WL_WheelEditor : Editor
             if (openMultiple)
             {
                 EditorGUILayout.BeginVertical();
-                for (int i = 0; i < tWhl.AllColors.Count; i++)
+                for (int i = 0; i < tWhl.Cuts; i++)
                 {
-                    tWhl.AllColors[i] = EditorGUILayout.ColorField(tWhl.AllColors[i]);
+                    if (tWhl.AllColors.Count > i) tWhl.AllColors[i] = EditorGUILayout.ColorField(tWhl.AllColors[i]);
+                    else tWhl.AllColors.Add(Color.black);
                 }
                 EditorGUILayout.EndVertical();
             }
@@ -133,9 +85,10 @@ public class WL_WheelEditor : Editor
             if (openMultiple)
             {
                 EditorGUILayout.BeginVertical();
-                for (int i = 0; i < tWhl.AllMats.Count; i++)
+                for (int i = 0; i < tWhl.Cuts; i++)
                 {
-                    tWhl.AllMats[i] = (Material)EditorGUILayout.ObjectField(tWhl.AllMats[i], typeof(Material), true);
+                    if (tWhl.AllMats.Count > i) tWhl.AllMats[i] = (Material)EditorGUILayout.ObjectField(tWhl.AllMats[i], typeof(Material), true);
+                    else tWhl.AllMats.Add(default);
                 }
                 EditorGUILayout.EndVertical();
             }
@@ -151,19 +104,16 @@ public class WL_WheelEditor : Editor
         SerializedProperty _s = serializedObject.FindProperty("AllEvents");
         EditorGUILayout.PropertyField(_s, true);
         serializedObject.ApplyModifiedProperties();
-        if (tWhl.AllEvents.Count != tWhl.Cuts)
+        List<UnityEvent> _oldEvents = new List<UnityEvent>();
+        for (int i = 0; i < tWhl.Cuts; i++)
         {
-            List<UnityEvent> _oldEvents = new List<UnityEvent>();
-            for (int i = 0; i < tWhl.Cuts; i++)
-            {
-                if (tWhl.AllEvents.Count > i) _oldEvents.Add(tWhl.AllEvents[i]);
-            }
-            tWhl.AllEvents.Clear();
-            for (int i = 0; i < tWhl.Cuts; i++)
-            {
-                if (_oldEvents.Count > i) tWhl.AllEvents.Add(_oldEvents[i]);
-                else tWhl.AllEvents.Add(new UnityEvent());
-            }
+            if (tWhl.AllEvents.Count > i) _oldEvents.Add(tWhl.AllEvents[i]);
+        }
+        tWhl.AllEvents.Clear();
+        for (int i = 0; i < tWhl.Cuts; i++)
+        {
+            if (_oldEvents.Count > i) tWhl.AllEvents.Add(_oldEvents[i]);
+            else tWhl.AllEvents.Add(new UnityEvent());
         }
     }
 }
