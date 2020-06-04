@@ -144,13 +144,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 275361477}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.19509031, w: 0.98078537}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1430255363}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 22.5}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
@@ -168,28 +168,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e519e90c01cf55947b698c0e001ff755, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DefaultMat: {fileID: 2100000, guid: 4f8ae1182e1edaa4b88c95a29cf78e60, type: 2}
   AllSegments: []
-  Cuts: 5
+  Cuts: 8
   Size: 4
-  JoystickAxisHorizontal: Wheel Horizontal
+  JoystickAxisHorizontal: Wheel Horizontal 111
   JoystickAxisVertical: Wheel Vertical
-  UseColor: 1
-  UseMaterial: 0
-  UseImage: 1
-  MultipleMat: 1
-  MultipleColor: 1
-  MultipleImages: 0
-  SingleMat: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  SingleImage: {fileID: 10915, guid: 0000000000000000f000000000000000, type: 0}
-  SingleColor: {r: 0.6698113, g: 0.65248036, b: 0.3507031, a: 1}
+  JoystickSubmit: Wheel Vertical
   HighlighColor: {r: 1, g: 0, b: 0, a: 1}
-  AllMats:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   AllEvents:
   - m_PersistentCalls:
       m_Calls: []
@@ -201,15 +186,74 @@ MonoBehaviour:
       m_Calls: []
   - m_PersistentCalls:
       m_Calls: []
-  AllColors:
-  - {r: 0.4528302, g: 0.34389463, b: 0.34389463, a: 0.4392157}
-  - {r: 0.05490195, g: 0.69803923, b: 0.5912768, a: 1}
-  - {r: 0.479172, g: 0.7830189, b: 0.28439835, a: 0.5647059}
-  - {r: 0.45293984, g: 0.4716981, b: 0.11347453, a: 1}
-  - {r: 0.73587936, g: 0.6901961, b: 0.78431374, a: 0.83137256}
-  AllImages: []
-  SegmentSprite: {fileID: 21300000, guid: ad0bb3416a02e2a4c9e20bd8fa7a071b, type: 3}
-  merdeBordelCulFesse: {fileID: 1016698505}
+  - m_PersistentCalls:
+      m_Calls: []
+  - m_PersistentCalls:
+      m_Calls: []
+  - m_PersistentCalls:
+      m_Calls: []
+  AllImages:
+  - {fileID: 2363794185914652050, guid: 16eb1a25c90b4d44cb19511d5c8fa29b, type: 3}
+  - {fileID: -8120042257009302046, guid: 16eb1a25c90b4d44cb19511d5c8fa29b, type: 3}
+  - {fileID: -1087244219906678851, guid: 16eb1a25c90b4d44cb19511d5c8fa29b, type: 3}
+  - {fileID: -5126597881587405615, guid: 16eb1a25c90b4d44cb19511d5c8fa29b, type: 3}
+  - {fileID: 7050587480338267217, guid: 16eb1a25c90b4d44cb19511d5c8fa29b, type: 3}
+  - {fileID: -3541692319676261277, guid: 16eb1a25c90b4d44cb19511d5c8fa29b, type: 3}
+  - {fileID: -7365931253784356101, guid: 16eb1a25c90b4d44cb19511d5c8fa29b, type: 3}
+  - {fileID: -2661182965641939825, guid: 16eb1a25c90b4d44cb19511d5c8fa29b, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &709190424
 GameObject:
   m_ObjectHideFlags: 0
@@ -294,13 +338,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 709190424}
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalRotation: {x: 0.25926942, y: -0.36130542, z: 0.3934824, w: 0.8046175}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 44.552002, y: -31.978, z: 38.731003}
 --- !u!1 &727970719
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 
@@ -8,7 +6,7 @@ public class WL_Segment : MonoBehaviour
 {
     [SerializeField] UnityEvent clickEvent = null;
 
-    Color startColor = Color.black;
+    Color startColor = Color.white;
 
     public bool SegmentActive { get; private set; } = false;
 
@@ -57,22 +55,10 @@ public class WL_Segment : MonoBehaviour
         transform.localScale = Vector3.one;
         gameObject.layer = 5;
         gameObject.AddComponent<CanvasRenderer>();
-        rend = gameObject.AddComponent<Image>();
-        if(rend)
-        {
-            rend.sprite = wheel.SegmentSprite;
-            rend.material = wheel.SingleMat;
-            rend.material.color = Color.white;
-            rend.type = Image.Type.Filled;
-            rend.fillMethod = Image.FillMethod.Radial360;
-            rend.fillClockwise = true;
-            rend.fillOrigin = 2;
-        }
         cuts = _cuts;
         Index = _index;
         size = _size;
         DrawSegment();
-        //DrawMesh();
     }
 
     public void Activate(bool _state)
@@ -80,25 +66,23 @@ public class WL_Segment : MonoBehaviour
         SegmentActive = _state;
         if(_state)
         {
-            rend.color = wheel.HighlighColor;
-            //transform.localPosition += (transform.right * 5) + (transform.up * 5);
+            childImage.color = wheel.HighlighColor;
         }
         else
         {
-            rend.color = startColor;
-            //transform.localPosition = Vector3.zero;
+            childImage.color = startColor;
         }
     }
 
     public void UpdateSegment()
     {
-        if (childImage) childImage.transform.rotation = new Quaternion(0, 0, -transform.rotation.z == 0 ? .1f : -transform.rotation.z, 0);
+        if (childImage) childImage.transform.localEulerAngles = new Vector3(0, 0, -transform.parent.eulerAngles.z);
     }
+
     public void UpdateSegment(WL_Segment _nextSegment)
     {
         if(childImage)
         {
-            childImage.transform.rotation = new Quaternion(0, 0, -transform.rotation.z, 0);
             Vector3 _dir = (Vector3.zero + transform.up + _nextSegment.transform.up) / 3;
             childImage.transform.localPosition = (_dir * wheel.Size) * 10;
         }
@@ -107,41 +91,26 @@ public class WL_Segment : MonoBehaviour
     public void DrawSegment()
     {
         angle = 360f / cuts;
-        float _start = Index * angle;
+        float _start = (Index * angle) - transform.parent.eulerAngles.z;
+        if(_start < 0)
+        {
+            _start = 360 - transform.parent.eulerAngles.z;
+        }
         float _end = _start + angle;
+        if(_end > 360)
+        {
+            _end = _end - 360;
+        }
         StartAngle = _start;
         EndAngle = _end;
 
-        rend.fillAmount = angle / 360;
         transform.eulerAngles = new Vector3(0, 0, -angle * Index);
 
-        if(wheel.UseColor)
-        {
-            startColor = wheel.MultipleColor ? (Index >= wheel.AllColors.Count ? startColor : wheel.AllColors[Index]) : wheel.SingleColor;
-            rend.color = startColor;
-            rend.material = wheel.DefaultMat;
-        }
-        else if(wheel.UseMaterial)
-        {
-            rend.material = wheel.MultipleMat ? (wheel.AllMats.Count >= Index ? wheel.DefaultMat : wheel.AllMats[Index]) : wheel.SingleMat;
-        }
-        if(wheel.UseImage)
-        {
-            if(!wheel.MultipleImages)
-            {
-                GameObject _go = new GameObject($"Image of {name}", typeof(Image));
-                _go.transform.SetParent(wheel.transform);
-                childImage = _go.GetComponent<Image>();
-                childImage.sprite = wheel.SingleImage;
-            }
-            else
-            {
-                GameObject _go = new GameObject($"Image of {name}", typeof(Image));
-                _go.transform.localPosition = transform.forward * 5;
-                childImage = _go.GetComponent<Image>();
-                childImage.sprite = wheel.AllImages.Count > Index ? wheel.AllImages[Index] : wheel.SingleImage;
-            }
-        }
+        GameObject _go = new GameObject($"Image of {name}", typeof(Image));
+        _go.transform.SetParent(wheel.transform);
+        childImage = _go.GetComponent<Image>();
+        childImage.sprite = wheel.AllImages.Count > Index ? wheel.AllImages[Index] : default;
+        childImage.name = $"{StartAngle} - {EndAngle}";
         IsReady = true;
         wheel.CheckPos();
     }
